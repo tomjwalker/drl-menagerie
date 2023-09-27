@@ -1,5 +1,16 @@
 # hello-drl-world
 
+## DRL Algorithms
+| Agent | Implemented? | Type | Pros | Cons |
+| :---: | :---: | :---: | :---: | :---: |
+| REINFORCE | wip | Policy Gradient | Smooth action probability distribution (vs e.g. discontinuous e-greedy); policy potentially simpler function to approximate than value functions; can approach deterministic policy | High variance (without baseline); sample inefficient; no guarantee of efficient exploration |
+| SARSA |  |  |  |  |
+| DQN |  |  |  |  |
+| A2C |  |  |  |  |
+| PPO |  |  |  |  |
+| A3C |  |  |  |  |
+
+
 ## Nomenclature
 | Symbol | Meaning |
 | :---: | :---: |
