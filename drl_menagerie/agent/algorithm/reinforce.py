@@ -8,14 +8,14 @@ import torch.optim as optim
 
 # Agent hyperparameters
 GAMMA = 0.99    # Discount factor
-HIDDEN_LAYER_UNITS = 128
+HIDDEN_LAYER_UNITS = 64
 LEARNING_RATE = 0.01
 
 # Environment parameters
 ENVIRONMENT = "CartPole-v1"
 
 # Training parameters
-TRAINING_EPISODES = 100
+TRAINING_EPISODES = 1000
 
 
 class Pi(nn.Module):
@@ -53,7 +53,7 @@ class Pi(nn.Module):
         # Get the action preference (logits; h(s, a, theta)) from the policy network
         action_preference = self.forward(state)
         # Convert the action preference to a probability distribution over the actions
-        prob_dist = Categorical(action_preference)
+        prob_dist = Categorical(logits=action_preference)
         # pi(a|s): Sample an action from the probability distribution
         action = prob_dist.sample()
         # Store the log probability of pi(a|s) in the log_probs list
@@ -102,7 +102,7 @@ def main():
     optimiser = optim.Adam(pi.parameters(), lr=LEARNING_RATE)
 
     for episode in range(TRAINING_EPISODES):
-        state = env.reset()
+        state, info = env.reset()
         for t in range(max_episode_steps):
             action = pi.act(state)
             state, reward, terminated, truncated, _ = env.step(action)
