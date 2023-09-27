@@ -10,6 +10,15 @@
 | PPO |  |  |  |  |
 | A3C |  |  |  |  |
 
+## Agent-Environment implementation
+| Environment | Type | REINFORCE | SARSA | DQN | A2C | PPO | A3C |
+| :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
+| Cartpole | Classic Control | wip |  |  |  |  |  |
+| Pendulum | Classic Control |  |  |  |  |  |  |
+| Mountain Car (Disc) | Classic Control |  |  |  |  |  |  |
+| Acrobot | Classic Control |  |  |  |  |  |  |
+| Lunar Lander | Box2D |  |  |  |  |  |  |
+| Lunar Lander | Bipedal Walker |  |  |  |  |  |  |
 
 ## Nomenclature
 | Symbol | Meaning |
