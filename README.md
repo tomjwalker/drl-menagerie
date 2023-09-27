@@ -18,7 +18,7 @@
 | Mountain Car (Disc) | Classic Control |  |  |  |  |  |  |
 | Acrobot | Classic Control |  |  |  |  |  |  |
 | Lunar Lander | Box2D |  |  |  |  |  |  |
-| Lunar Lander | Bipedal Walker |  |  |  |  |  |  |
+| Bipedal Walker | Box2D |  |  |  |  |  |  |
 
 ## Nomenclature
 | Symbol | Meaning |
