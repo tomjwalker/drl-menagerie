@@ -4,14 +4,14 @@
 | Agent | Implemented? | Type | Pros | Cons |
 | :---: | :---: | :---: | :---: | :---: |
 | REINFORCE | wip | Policy Gradient | Smooth action probability distribution (vs e.g. discontinuous e-greedy); policy potentially simpler function to approximate than value functions; can approach deterministic policy | High variance (without baseline); sample inefficient; no guarantee of efficient exploration |
-| SARSA |  |  |  |  |
 | DQN |  |  |  |  |
 | A2C |  |  |  |  |
 | PPO |  |  |  |  |
+| DDPG |  |  |  |  |
 | A3C |  |  |  |  |
 
 ## Agent-Environment implementation
-| Environment | Type | REINFORCE | SARSA | DQN | A2C | PPO | A3C |
+| Environment | Type | REINFORCE | DQN | A2C | PPO | DDPG | A3C | 
 | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
 | Cartpole | Classic Control | wip |  |  |  |  |  |
 | Pendulum | Classic Control |  |  |  |  |  |  |
