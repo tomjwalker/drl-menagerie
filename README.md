@@ -1,4 +1,4 @@
-# hello-drl-world
+# tortoise-and-achilles
 
 ## DRL Algorithms
 | Agent | Implemented? | Type | Pros | Cons |
