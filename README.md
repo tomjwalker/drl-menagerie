@@ -1,5 +1,5 @@
 # hello-drl-world
-First deep reinforcement learning library, working through the easier Gymnasium Classic Control and Box2D environments, and closely following Laura and Wah Loon Keng's book Foundations of Deep Reinforcement Learning and accompanying environment, SLM Lab. 
+First deep reinforcement learning library, working through the easier Gymnasium Classic Control and Box2D environments, and closely following Laura Graesser and Wah Loon Keng's book Foundations of Deep Reinforcement Learning and accompanying environment, SLM Lab. 
 
 ## DRL Algorithms
 | Agent | Implemented? | Type | Pros | Cons |
