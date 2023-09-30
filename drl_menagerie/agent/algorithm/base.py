@@ -18,7 +18,7 @@ class Algorithm(ABC):
     @abstractmethod
     @api
     def init_nets(self, global_nets=None):
-        '''Initialize the neural network from the spec'''
+        '''Initialize the neural network from the spec_dict'''
         raise NotImplementedError
 
     @api
