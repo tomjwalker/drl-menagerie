@@ -12,14 +12,14 @@ First deep reinforcement learning library, working through the easier Gymnasium 
 | A3C |  |  |  |  |  |
 
 ## Agent-Environment implementation
-| Environment | Type | REINFORCE | SARSA | DQN | A2C | PPO | A3C | 
-| :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
-| Cartpole | Classic Control | ✓ |  |  |  |  |  |
-| Pendulum | Classic Control |  |  |  |  |  |  |
-| Mountain Car (Disc) | Classic Control |  |  |  |  |  |  |
-| Acrobot | Classic Control |  |  |  |  |  |  |
-| Lunar Lander | Box2D |  |  |  |  |  |  |
-| Bipedal Walker | Box2D |  |  |  |  |  |  |
+| Environment | Type | Training start | Training end | REINFORCE | SARSA | DQN | A2C | PPO | A3C | 
+| :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
+| Cartpole | Classic Control | ✓ |  |  |  |  |  |  |
+| Pendulum | Classic Control |  |  |  |  |  |  |  |
+| Mountain Car (Disc) | Classic Control |  |  |  |  |  |  |  |
+| Acrobot | Classic Control |  |  |  |  |  |  |  |
+| Lunar Lander | Box2D |  |  |  |  |  |  |  |
+| Bipedal Walker | Box2D |  |  |  |  |  |  |  |
 
 ## Nomenclature
 | Symbol | Meaning |
