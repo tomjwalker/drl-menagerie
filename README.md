@@ -4,7 +4,7 @@ First deep reinforcement learning library, working through the easier Gymnasium 
 ## DRL Algorithms
 | Agent | Implemented? | Type | Pros | Cons |
 | :---: | :---: | :---: | :---: | :---: |
-| REINFORCE | wip | Policy Gradient | Smooth action probability distribution (vs e.g. discontinuous e-greedy); policy potentially simpler function to approximate than value functions; can approach deterministic policy | High variance (without baseline); sample inefficient; no guarantee of efficient exploration |
+| REINFORCE | wip | Policy Gradient | Smooth action probability distribution (vs e.g. discontinuous e-greedy) <br> Policy potentially simpler function to approximate than value functions <br> can approach deterministic policy | High variance (without baseline) <br> sample inefficient <br> no guarantee of efficient exploration |
 | SARSA |  |  |  |  |
 | DQN |  |  |  |  |
 | A2C |  |  |  |  |
