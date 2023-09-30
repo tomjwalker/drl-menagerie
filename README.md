@@ -2,19 +2,19 @@
 First deep reinforcement learning library, working through the easier Gymnasium Classic Control and Box2D environments, and closely following Laura Graesser and Wah Loon Keng's book Foundations of Deep Reinforcement Learning and accompanying environment, SLM Lab. 
 
 ## DRL Algorithms
-| Agent | Implemented? | Type | Pros | Cons |
-| :---: | :---: | :---: | :---: | :---: |
-| REINFORCE | wip | Policy Gradient | Smooth action probability distribution (vs e.g. discontinuous e-greedy) <br> Policy potentially simpler function to approximate than value functions <br> can approach deterministic policy | High variance (without baseline) <br> sample inefficient <br> no guarantee of efficient exploration |
-| SARSA |  |  |  |  |
-| DQN |  |  |  |  |
-| A2C |  |  |  |  |
-| PPO |  |  |  |  |
-| A3C |  |  |  |  |
+| Agent | Implemented? | Type | Pros | Cons | Notes |
+| :---: | :---: | :---: | :---: | :---: | :---: |
+| REINFORCE | ✓ | Policy Gradient | - Smooth action probability distribution (vs e.g. discontinuous e-greedy) <br> - Policy potentially simpler function to approximate than value functions <br> - Can approach deterministic policy | - High variance (without baseline) <br> - Sample inefficient <br>  -No guarantee of efficient exploration | Only simplest version implemented: next implement version with baseline  |
+| SARSA |  |  |  |  |  |
+| DQN |  |  |  |  |  |
+| A2C |  |  |  |  |  |
+| PPO |  |  |  |  |  |
+| A3C |  |  |  |  |  |
 
 ## Agent-Environment implementation
 | Environment | Type | REINFORCE | SARSA | DQN | A2C | PPO | A3C | 
 | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
-| Cartpole | Classic Control | wip |  |  |  |  |  |
+| Cartpole | Classic Control | ✓ |  |  |  |  |  |
 | Pendulum | Classic Control |  |  |  |  |  |  |
 | Mountain Car (Disc) | Classic Control |  |  |  |  |  |  |
 | Acrobot | Classic Control |  |  |  |  |  |  |
