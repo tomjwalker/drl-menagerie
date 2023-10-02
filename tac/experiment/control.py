@@ -49,12 +49,43 @@ class Session:
             self.training_log.loc[episode, "total_reward"] = total_reward
             self.training_log.loc[episode, "solved"] = solved
 
-            if episode in self.spec.get("training_record_episodes"):
+            if episode in self.spec.get("training_record_episodes", []):
                 record_agent(self.agent, self.spec, episode)
 
             print(
                 f"Episode {episode} finished after {t} timesteps. "
                 f"Total reward: {total_reward}. Loss: {loss}. Solved: {solved}"
             )
+        #
+        # plot_session(self.training_log)
 
-        plot_session(self.training_log)
+        return self.training_log
+
+
+class Trial:
+
+    def __init__(self, spec):
+        self.spec = spec
+        self.num_sessions = spec["num_sessions"]
+        self.session_logs = {}
+
+    def _run_serial_trial(self):
+        for session_num in range(self.num_sessions):
+            session = Session(self.spec)
+            session_log = session.run()
+            self.session_logs[session_num] = session_log
+
+    def _run_parallel_trial(self):
+        # TODO: implement parallelised version
+        raise NotImplementedError
+
+    def run(self):
+        run_mode = self.spec.get("run_mode", "serial")
+        if run_mode == "serial":
+            self._run_serial_trial()
+        elif run_mode == "parallel":
+            self._run_parallel_trial()
+        else:
+            raise ValueError(f"Invalid run mode: {run_mode}. Should be one of: serial, parallel")
+
+        return self.session_logs
