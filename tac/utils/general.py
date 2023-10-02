@@ -1,6 +1,9 @@
+import time
 from pathlib import Path
 
+import numpy as np
 import pandas as pd
+import torch
 
 
 def set_filepath(file_path_string):
@@ -27,3 +30,13 @@ def temp_initialise_log(spec_dict):
     training_log = pd.DataFrame(index=range(num_training_episodes), columns=metrics)
 
     return training_log
+
+
+def set_random_seed():
+    """Set random seeds for PyTorch and NumPy, for reproducibility"""
+    seed = int(time.time())
+    # TODO: random seed dependent on session and trial numbers too? (See SLM-Lab)
+    # TODO: save seed to spec
+    torch.manual_seed(seed)
+    np.random.seed(seed)
+    return seed
