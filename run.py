@@ -1,11 +1,10 @@
 # import json
 import gymnasium as gym
 
-from drl_menagerie.agent.algorithm.reinforce import Reinforce
-from drl_menagerie.utils.general import temp_initialise_log
-from drl_menagerie.utils.visualisation import record_agent, plot_session
+from tac.utils.general import temp_initialise_log
+from tac.utils.visualisation import record_agent, plot_session
 
-from drl_menagerie import algorithm_map
+from tac import algorithm_map
 
 
 # spec_path = "drl_menagerie/spec/reinforce/reinforce_cartpole.json"
