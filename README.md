@@ -1,5 +1,15 @@
-# tortoise-achilles-crab
+# tortoise-achilles-crab-lab
 First deep reinforcement learning library, working through the easier Gymnasium Classic Control and Box2D environments, and closely following Laura Graesser and Wah Loon Keng's book Foundations of Deep Reinforcement Learning and accompanying framework, SLM Lab. 
+
+## Agent-Environment implementation
+| Environment | Type | Training start | Training end | REINFORCE | SARSA | DQN | A2C | PPO | A3C | 
+| :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
+| Cartpole | Classic Control | <img src="./media/cartpole_unsolved.gif" style="float: left; margin-right: 10px;" width="300" /> | <img src="./media/cartpole_solved.gif" style="float: left; margin-right: 10px;" width="300" /> | (✓ mvp) |  |  |  |  |
+| Pendulum | Classic Control |  |  |  |  |  |  |  |
+| Mountain Car (Disc) | Classic Control |  |  |  |  |  |  |  |
+| Acrobot | Classic Control |  |  |  |  |  |  |  |
+| Lunar Lander | Box2D |  |  |  |  |  |  |  |
+| Bipedal Walker | Box2D |  |  |  |  |  |  |  |
 
 ## DRL Algorithms
 | Agent | Implemented? | Type | Pros | Cons | Notes |
@@ -10,16 +20,6 @@ First deep reinforcement learning library, working through the easier Gymnasium 
 | A2C |  |  |  |  |  |
 | PPO |  |  |  |  |  |
 | A3C |  |  |  |  |  |
-
-## Agent-Environment implementation
-| Environment | Type | Training start | Training end | REINFORCE | SARSA | DQN | A2C | PPO | A3C | 
-| :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
-| Cartpole | Classic Control | <img src="./media/cartpole_unsolved.gif" style="float: left; margin-right: 10px;" width="300" /> | <img src="./media/cartpole_solved.gif" style="float: left; margin-right: 10px;" width="300" /> | ✓ |  |  |  |  |
-| Pendulum | Classic Control |  |  |  |  |  |  |  |
-| Mountain Car (Disc) | Classic Control |  |  |  |  |  |  |  |
-| Acrobot | Classic Control |  |  |  |  |  |  |  |
-| Lunar Lander | Box2D |  |  |  |  |  |  |  |
-| Bipedal Walker | Box2D |  |  |  |  |  |  |  |
 
 ## Nomenclature
 | Symbol | Meaning |
