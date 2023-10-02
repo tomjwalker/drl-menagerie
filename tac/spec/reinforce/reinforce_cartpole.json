@@ -1,0 +1,37 @@
+{
+  "reinforce_cartpole": {
+    "agent": [{
+      "name": "Reinforce",
+      "algorithm": {
+        "name": "Reinforce",
+        "gamma": 0.99
+      },
+      "memory": {
+        "name": "OnPolicyReplay"
+      },
+      "net": {
+        "type": "ANN",
+        "hidden_layers": [64],
+        "activation": "relu",
+        "batch_norm": false,
+        "loss_spec": {
+          "name": "MSELoss"
+        },
+        "optimiser_spec": {
+          "name": "Adam",
+          "lr": 0.001
+        }
+      }
+    }],
+    "env": [{
+      "name": "CartPole-v1"
+    }],
+    "body": [{}],
+    "meta": [{
+      "eval_freq": 100,
+      "max_session": 4,
+      "max_trial": 1
+    }],
+    "search": [{}]
+  }
+}
