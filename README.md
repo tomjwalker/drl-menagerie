@@ -4,7 +4,7 @@ First deep reinforcement learning library, working through the easier Gymnasium 
 ## Agent-Environment implementation
 | Environment | Type | Training start | Training end | REINFORCE | SARSA | DQN | A2C | PPO | A3C | 
 | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
-| Cartpole | Classic Control | <img src="./media/cartpole_unsolved.gif" style="float: left; margin-right: 10px;" width="300" /> | <img src="./media/cartpole_solved.gif" style="float: left; margin-right: 10px;" width="300" /> | (✓ mvp) |  |  |  |  |
+| Cartpole | Classic Control | <img src="./media/cartpole_unsolved.gif" style="float: left; margin-right: 10px;" width="150" /> | <img src="./media/cartpole_solved.gif" style="float: left; margin-right: 10px;" width="150" /> | (✓ mvp) |  |  |  |  |
 | Pendulum | Classic Control |  |  |  |  |  |  |  |
 | Mountain Car (Disc) | Classic Control |  |  |  |  |  |  |  |
 | Acrobot | Classic Control |  |  |  |  |  |  |  |
