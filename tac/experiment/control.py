@@ -89,3 +89,14 @@ class Trial:
             raise ValueError(f"Invalid run mode: {run_mode}. Should be one of: serial, parallel")
 
         return self.session_logs
+
+
+# class Experiment:
+#     raise NotImplementedError
+
+
+RUN_MODES = {
+    "session": Session,
+    "trial": Trial,
+    # "experiment": Experiment,
+}
