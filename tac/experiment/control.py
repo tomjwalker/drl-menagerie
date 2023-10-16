@@ -1,8 +1,36 @@
-from tac import algorithm_map
+import numpy as np
+from ray import tune
 import gymnasium as gym
 
+from tac import algorithm_map
 from tac.utils.general import temp_initialise_log, set_random_seed
 from tac.utils.visualisation import record_agent, plot_session
+
+
+SEARCH_MODES = {
+    "uniform": tune.uniform,
+    "normal": tune.randn,
+    "choice": tune.choice,
+    "randint": tune.randint,
+    "grid": tune.grid_search,
+}
+
+
+def _parse_search_key(key):
+    """Search keys are of the form: <parameter_name>__<search_mode>. This function parses the key into its constituent
+    parts: parameter_name and search_mode."""
+    return key.split("__")[0], key.split("__")[1]
+
+
+def get_search_space(spec):
+    """Returns a search space for the hyperparameters specified in the spec. The search space is a dictionary of
+    parameter names and search modes. The search modes are functions from the Ray Tune library."""
+    search_dict = spec["search"]
+    search_space = {}
+    for key in search_dict:
+        param_name, search_mode = _parse_search_key(key)
+        search_space[param_name] = SEARCH_MODES[search_mode](*search_dict[key])
+    return search_space
 
 
 def make_agent_env(spec):
