@@ -24,6 +24,24 @@ class TestOnPolicyReplay:
         assert replay.next_states == [[0, 4, 8], [23]]
         assert replay.dones == [[False, False, True], [True]]
 
+    def test_sample(self):
+
+        agent = Reinforce(spec_dict=spec, input_size=1, output_size=1)
+        replay = OnPolicyReplay(agent)
+
+        replay.update(0, 0, 0, 0, False)
+        replay.update(1, 2, 3, 4, False)
+        replay.update(5, 6, 7, 8, True)
+        replay.update(20, 21, 22, 23, True)
+
+        assert replay.sample() == {
+            "states": [[0, 1, 5], [20]],
+            "actions": [[0, 2, 6], [21]],
+            "rewards": [[0, 3, 7], [22]],
+            "next_states": [[0, 4, 8], [23]],
+            "dones": [[False, False, True], [True]],
+        }
+
 
 class TestOnPolicyBatchReplay:
 
@@ -44,3 +62,21 @@ class TestOnPolicyBatchReplay:
         assert replay.rewards == [0, 3, 7, 22]
         assert replay.next_states == [0, 4, 8, 23]
         assert replay.dones == [False, False, True, True]
+
+    def test_sample(self):
+
+        agent = Reinforce(spec_dict=spec, input_size=1, output_size=1)
+        replay = OnPolicyBatchReplay(agent)
+
+        replay.update(0, 0, 0, 0, False)
+        replay.update(1, 2, 3, 4, False)
+        replay.update(5, 6, 7, 8, True)
+        replay.update(20, 21, 22, 23, True)
+
+        assert replay.sample() == {
+            "states": [0, 1, 5, 20],
+            "actions": [0, 2, 6, 21],
+            "rewards": [0, 3, 7, 22],
+            "next_states": [0, 4, 8, 23],
+            "dones": [False, False, True, True],
+        }
