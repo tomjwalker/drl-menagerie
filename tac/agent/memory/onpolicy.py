@@ -1,4 +1,5 @@
 class OnPolicyReplay:
+
     def __init__(self, agent):
 
         self.training_frequency = agent.training_frequency
@@ -25,20 +26,24 @@ class OnPolicyReplay:
         Adds a single experience to the replay buffer.
         Helper method to differentiate SARSA-specific updates from general algorithm API update method.
         """
-        self.size += 1
-        self.seen_size += 1
         self.most_recent = (state, action, reward, next_state, done)
-        # Add the most recent experience to each of the current episode data attributes
+        # Add the most recent experience to each of the lists which are the values of the current episode data dict
         for i, k in enumerate(self.data_keys):
-            getattr(self, k).append(self.most_recent[i])
-        # If episode ended, add the current episode data to the replay buffer and clear the current episode data
+            self.current_episode_data[k].append(self.most_recent[i])
+
+        # If episode ended, add the current episode data to the replay buffer (the individual attributes matching the
+        # strings in `data_keys`), then clear the current episode data dictionary
         if done:
             for k in self.data_keys:
                 getattr(self, k).append(self.current_episode_data[k])
             self.current_episode_data = {k: [] for k in self.data_keys}
-        # If agent has collected the desired number of experiences, it is ready to train
-        if len(self.states) == self.training_frequency:
-            self.agent.ready_to_train = True
+            # If agent has collected the desired number of experiences, it is ready to train
+            if len(self.states) == self.training_frequency:
+                self.agent.ready_to_train = True
+
+        # Track memory size and number of experiences seen
+        self.size += 1
+        self.seen_size += 1
 
     def update(self, state, action, reward, next_state, done):
         """Adds a single experience to the replay buffer."""
@@ -114,4 +119,17 @@ class OnPolicyBatchReplay(OnPolicyReplay):
         """
         return super().sample()
 
+
+# DEBUG
+from tac.agent.algorithm.reinforce import Reinforce
+from tac.spec.reinforce.temp_spec import spec
+
+if __name__ == "__main__":
+    agent = Reinforce(spec_dict=spec, input_size=1, output_size=1)
+    replay = OnPolicyReplay(agent)
+
+    replay.update(0, 0, 0, 0, False)
+    replay.update(1, 2, 3, 4, False)
+    replay.update(5, 6, 7, 8, True)
+    replay.update(20, 21, 22, 23, True)
 
