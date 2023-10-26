@@ -76,19 +76,3 @@ def to_torch_batch(batch, is_episodic, device=None):
         # Convert each element of the batch to a PyTorch tensor, and move to the specified device
         batch = {k: torch.tensor(np.array(v), device=device) for k, v in batch.items()}
     return batch
-
-
-# DEBUG
-if __name__ == "__main__":
-
-    is_episodic = True
-
-    batch = {
-        "states": [[0, 1, 5], [20]],
-        "actions": [[0, 2, 6], [21]],
-        "rewards": [[0, 3, 7], [22]],
-        "next_states": [[0, 4, 8], [23]],
-        "dones": [[False, False, True], [True]],
-    }
-
-    output = to_torch_batch(batch, is_episodic)
