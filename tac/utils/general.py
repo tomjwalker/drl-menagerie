@@ -40,3 +40,55 @@ def set_random_seed():
     torch.manual_seed(seed)
     np.random.seed(seed)
     return seed
+
+
+def to_torch_batch(batch, is_episodic, device=None):
+    """
+    Converts a batch of experiences from a dictionary of lists to a dictionary of PyTorch tensors.
+
+    Arguments:
+    ----------
+    batch: dict
+        Batch of experiences. Keys are the names of the different elements of an experience, values are lists of the
+        experiences. Elements may be nested into episodes.
+        e.g.
+        batch = {
+            "states": [s_1, s_2, ...],
+            "actions": [a_1, a_2, ...],
+            "rewards": [r_1, r_2, ...],
+            "next_states": [s_1, s_2, ...],
+            "dones": [d_1, d_2, ...],
+        }
+    device: torch.device
+        Device to which the batch should be moved
+    is_episodic: bool
+        Whether the batch is episodic or not. If True, the batch is nested into episodes. If False, the batch is not
+        nested into episodes.
+    """
+
+    if is_episodic:
+        # Flatten each value of the dictionary into a single numpy array
+        batch = {k: np.array([item for sublist in v for item in sublist]) for k, v in batch.items()}
+        # Then convert each element of the batch to a PyTorch tensor, and move to the specified device
+        batch = {k: torch.tensor(v, device=device) for k, v in batch.items()}
+
+    else:
+        # Convert each element of the batch to a PyTorch tensor, and move to the specified device
+        batch = {k: torch.tensor(np.array(v), device=device) for k, v in batch.items()}
+    return batch
+
+
+# DEBUG
+if __name__ == "__main__":
+
+    is_episodic = True
+
+    batch = {
+        "states": [[0, 1, 5], [20]],
+        "actions": [[0, 2, 6], [21]],
+        "rewards": [[0, 3, 7], [22]],
+        "next_states": [[0, 4, 8], [23]],
+        "dones": [[False, False, True], [True]],
+    }
+
+    output = to_torch_batch(batch, is_episodic)
