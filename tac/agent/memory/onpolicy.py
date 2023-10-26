@@ -118,18 +118,3 @@ class OnPolicyBatchReplay(OnPolicyReplay):
         }
         """
         return super().sample()
-
-
-# DEBUG
-from tac.agent.algorithm.reinforce import Reinforce
-from tac.spec.reinforce.temp_spec import spec
-
-if __name__ == "__main__":
-    agent = Reinforce(spec_dict=spec, input_size=1, output_size=1)
-    replay = OnPolicyReplay(agent)
-
-    replay.update(0, 0, 0, 0, False)
-    replay.update(1, 2, 3, 4, False)
-    replay.update(5, 6, 7, 8, True)
-    replay.update(20, 21, 22, 23, True)
-
