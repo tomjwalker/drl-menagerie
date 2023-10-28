@@ -12,6 +12,8 @@ SPEC_TEMPLATE = {
         "activation": str,
         "optimiser": str,
         "data_directory": str,
+        "training_frequency": int,
+        "memory": str,
     },
     "optional_fields": {
         "num_sessions": int,

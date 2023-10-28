@@ -16,4 +16,6 @@ spec = {
     #     "gamma__uniform": [0.5, 1.0],
     # }
     "epsilon": 0.1,
+    "training_frequency": 10,
+    "memory": "on_policy",
 }

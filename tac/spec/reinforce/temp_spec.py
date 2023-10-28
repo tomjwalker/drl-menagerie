@@ -15,4 +15,7 @@ spec = {
     #     "learning_rate__choice": [0.01, 0.001],
     #     "gamma__uniform": [0.5, 1.0],
     # }
+    # TODO: this next is currently unused
+    "training_frequency": 1,
+    "memory": "on_policy",
 }
