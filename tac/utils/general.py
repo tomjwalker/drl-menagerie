@@ -91,5 +91,3 @@ def set_attr_from_dict(obj, attr_dict, keys=None):
         attr_dict = ps.pick(attr_dict, keys)
     for attr, val in attr_dict.items():
         setattr(obj, attr, val)
-    return obj
-
