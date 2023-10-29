@@ -1,6 +1,10 @@
 from abc import ABC, abstractmethod
 import time
 
+import numpy as np
+
+from tac.utils.general import set_attr_from_dict
+
 
 class Clock:
 
@@ -67,7 +71,41 @@ class BaseEnv(ABC):
     """
 
     def __init__(self, spec):
-        raise NotImplementedError
+
+        # Set default attributes
+        set_attr_from_dict(self, dict(
+            eval_frequency=10000,
+            log_frequency=10000,
+            frame_op=None,
+            frame_op_len=None,
+            normalise_state=False,
+            reward_scale=None,
+            num_envs=1,
+        ))
+
+        # Set attributes from spec
+        set_attr_from_dict(self, spec, [
+            "eval_frequency",
+            "log_frequency",
+            "name",
+            "frame_op_len",
+            "normalise_state",
+            "reward_scale",
+            "num_envs",
+            "max_t",
+            "max_frame",
+        ])
+
+        self._set_clock()
+        self.done = False
+        self.total_reward = np.nan
+
+        # TODO: These next attributes will only be available once the helper methods have been implemented
+        # if utils.general.get_lab_mode() == "eval":
+        #     self.num_envs = ps.get(spec, "meta.rigorous_eval")
+        # self.to_render = utils.general.to_render()
+        # self._infer_frame_attr(spec)
+        # self._infer_venv_attr()
 
     def _get_spaces(self, u_env):
         raise NotImplementedError
@@ -111,4 +149,3 @@ class BaseEnv(ABC):
     def close(self):
         """Method to close and clean up the environment"""
         raise NotImplementedError
-
