@@ -60,4 +60,55 @@ class Clock:
 
 
 class BaseEnv(ABC):
-    raise NotImplementedError
+    """
+    Base Env class with API and helper methods.
+
+    Use to implement env classes which are compatible with the TAC framework.
+    """
+
+    def __init__(self, spec):
+        raise NotImplementedError
+
+    def _get_spaces(self, u_env):
+        raise NotImplementedError
+
+    def _get_observable_dim(self, observation_space):
+        raise NotImplementedError
+
+    def _get_action_dim(self, action_space):
+        raise NotImplementedError
+
+    def _infer_frame_attr(self, spec):
+        raise NotImplementedError
+
+    def _infer_venv_attr(self):
+        raise NotImplementedError
+
+    def _is_discrete(self, action_space):
+        raise NotImplementedError
+
+    def _set_clock(self):
+        self.clock_speed = 1 * (self.num_envs or 1)    # TODO: this line only salient for vectorised envs
+        self.clock = Clock(max_frame=self.max_frame, clock_speed=self.clock_speed)
+
+    def _set_attr_from_u_env(self, u_env):
+        raise NotImplementedError
+
+    def _update_total_reward(self, info):
+        raise NotImplementedError
+
+    @abstractmethod
+    def reset(self):
+        """Resets the environment and returns the state"""
+        raise NotImplementedError
+
+    @abstractmethod
+    def step(self, action):
+        """Takes an action in the environment, and returns the next state, reward, done and info"""
+        raise NotImplementedError
+
+    @abstractmethod
+    def close(self):
+        """Method to close and clean up the environment"""
+        raise NotImplementedError
+
