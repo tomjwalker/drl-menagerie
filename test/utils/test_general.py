@@ -61,11 +61,11 @@ def test_set_attr_from_dict_no_keys():
     obj = TestClass()
     attr_dict = {"a": 1, "b": 2, "c": 3}
 
-    output = set_attr_from_dict(obj, attr_dict)
+    set_attr_from_dict(obj, attr_dict)
 
-    assert output.a == 1
-    assert output.b == 2
-    assert output.c == 3
+    assert obj.a == 1
+    assert obj.b == 2
+    assert obj.c == 3
 
 
 def test_set_attr_from_dict_with_keys():
@@ -75,8 +75,8 @@ def test_set_attr_from_dict_with_keys():
     obj = TestClass()
     attr_dict = {"a": 1, "b": 2, "c": 3}
 
-    output = set_attr_from_dict(obj, attr_dict, keys=["a", "b"])
+    set_attr_from_dict(obj, attr_dict, keys=["a", "b"])
 
-    assert output.a == 1
-    assert output.b == 2
-    assert not hasattr(output, "c")
+    assert obj.a == 1
+    assert obj.b == 2
+    assert not hasattr(obj, "c")
