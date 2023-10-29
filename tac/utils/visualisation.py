@@ -10,7 +10,7 @@ from tac.utils.general import set_filepath
 def record_agent(agent, spec_dict, episode):
     """Records the agent's performance in the environment, and saves the recording to a file"""
 
-    # TODO: hack. Check whether there is a better way to do this. Done because the agent's model is a PyTorch nn, and
+    # TODO: hack. Check whether there is a better way to do this. Done because the agent's net is a PyTorch nn, and
     #   there are potentially complications around nn.Module.train() and nn.Module.eval()
     video_agent = copy.deepcopy(agent)
 

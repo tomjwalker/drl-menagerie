@@ -5,6 +5,8 @@ import numpy as np
 import pandas as pd
 import torch
 
+import pydash as ps
+
 
 def set_filepath(file_path_string):
     """Creates a directory at the specified path if it does not already exist"""
@@ -76,3 +78,18 @@ def to_torch_batch(batch, is_episodic, device=None):
         # Convert each element of the batch to a PyTorch tensor, and move to the specified device
         batch = {k: torch.tensor(np.array(v), device=device) for k, v in batch.items()}
     return batch
+
+
+def set_attr_from_dict(obj, attr_dict, keys=None):
+    """
+    Sets attributes of an object from a dictionary. If keys is specified, only sets attributes for the keys in 'keys'.
+    """
+
+    if keys is not None:
+        # Pydash (ps) is a utility library for Python with many convenience methods.
+        # This one concisely filters a dict by a list of keys.
+        attr_dict = ps.pick(attr_dict, keys)
+    for attr, val in attr_dict.items():
+        setattr(obj, attr, val)
+    return obj
+
