@@ -154,7 +154,8 @@ class BaseEnv(ABC):
         # self._infer_frame_attr(spec)
         # self._infer_venv_attr()
 
-    def _get_spaces(self, u_env):
+    @staticmethod
+    def _get_spaces(u_env):
         """Helper to set the extra attributes to the observation and action spaces, then return them"""
         observation_space = u_env.observation_space
         action_space = u_env.action_space
@@ -162,7 +163,8 @@ class BaseEnv(ABC):
         set_gym_space_attr(action_space)
         return observation_space, action_space
 
-    def _get_observable_dim(self, observation_space):
+    @staticmethod
+    def _get_observable_dim(observation_space):
         """Get the observable dimension for an agent in the environment"""
         state_dim = observation_space.shape
         if isinstance(observation_space, spaces.MultiDiscrete):
@@ -174,7 +176,8 @@ class BaseEnv(ABC):
             state_dim = state_dim[0]
         return {"state_dim": state_dim}
 
-    def _get_action_dim(self, action_space):
+    @staticmethod
+    def _get_action_dim(action_space):
         """Get the action dim for an action_space for agent to use"""
         if isinstance(action_space, spaces.Box):
             assert len(action_space.shape) == 1, "Only 1D action spaces are supported"
@@ -193,7 +196,8 @@ class BaseEnv(ABC):
     def _infer_venv_attr(self):
         raise NotImplementedError
 
-    def _is_discrete(self, action_space):
+    @staticmethod
+    def is_discrete(action_space):
         """Check whether the action space is discrete. All except Box are discrete"""
         return get_class_name(action_space) != "Box"
 
@@ -207,7 +211,7 @@ class BaseEnv(ABC):
         self.observation_space, self.action_space = self._get_spaces(u_env)
         self.observable_dim = self._get_observable_dim(self.observation_space)
         self.action_dim = self._get_action_dim(self.action_space)
-        self._is_discrete(self.action_space)
+        self.is_discrete(self.action_space)
 
     def _update_total_reward(self, info):
         raise NotImplementedError

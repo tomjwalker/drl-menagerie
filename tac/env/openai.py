@@ -1,8 +1,8 @@
 from tac.env.base import BaseEnv
-import gymnasium as gym
 import numpy as np
 import pydash as ps
 from tac.env.wrapper import make_gym_env
+
 
 class OpenAIEnv(BaseEnv):
 
