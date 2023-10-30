@@ -25,7 +25,6 @@ class OpenAIEnv(BaseEnv):
                 # normalise_state=self.normalise_state,
                 # episode_life=self.episode_life,
             )
-            # self.env.seed(self.seed)
         # TODO: check next line
         if self.name.startswith("Unity"):
             raise NotImplementedError("Unity environments not yet supported")
@@ -38,7 +37,13 @@ class OpenAIEnv(BaseEnv):
         self.u_env.seed(seed)
 
     def reset(self):
-        raise NotImplementedError
+        """Reset the environment and return the initial state"""
+        # TODO: check done or terminated
+        self.done = False
+        state = self.u_env.reset()
+        # if self.to_render:
+        #     self.u_env.render()
+        return state
 
     def step(self, action):
         raise NotImplementedError
