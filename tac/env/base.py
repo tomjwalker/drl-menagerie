@@ -3,7 +3,54 @@ import time
 
 import numpy as np
 
+from gymnasium import spaces
+
 from tac.utils.general import set_attr_from_dict
+from tac.utils.general import get_class_name
+
+
+def set_gym_space_attr(gym_space):
+    """
+    Set missing gym space attributes, for standardisation across different gym space types.
+
+    Spaces in Gymnasium describe mathematical sets, and are used to specify valid actions (`self.action_space`) and
+    observations (`self.observation_space`).
+
+    e.g. Three possible actions, (0, 1, 2) and observations are vectors in the 2D unit cube:
+    -> env.action_space = spaces.Discrete(3)
+    -> env.observation_space = spaces.Box(low=0, high=1, shape=(2,))
+
+    Types of gym spaces:
+    - Box: A (possibly unbounded) box in R^n. Specifically, a Box represents the Cartesian product of n closed
+        intervals. Each interval has the form of one of [a, b], (-oo, b], [a, oo), or (-oo, oo).
+    - Discrete: A discrete space in {0, 1, ..., n-1}. E.g. for n=3, valid actions are (0, 1, 2).
+    - MultiBinary: An n-shape binary space. Elements of this space are binary arrays of a shape which is specified
+        during construction. E.g. if obs_space = MultiBinary([3, 2]), then an observation might be
+        array([[0, 1], [1, 0], [0, 0]]).
+    - MultiDiscrete: Represents the cartesian product of arbitrary Discrete spaces. Useful for game controllers or
+        keyboards where each key can be represented as a discrete action space. E.g. Nintendo Game Controller:
+            1. Arrow Keys: Discrete(5): NOOP(0), UP(1), RIGHT(2), DOWN(3), LEFT(4)
+            2. Button A: Discrete(2): NOOP(0), PRESSED(1)
+            3. Button B: Discrete(2): NOOP(0), PRESSED(1)
+        - This would be represented as MultiDiscrete([5, 2, 2]).
+    """
+    if isinstance(gym_space, spaces.Box):
+        setattr(gym_space, "is_discrete", False)
+    elif isinstance(gym_space, spaces.Discrete):
+        setattr(gym_space, "is_discrete", True)
+        # TODO: Different from SLM-Lab - accommodates start parameter. Check these attributes exist in gym_space
+        setattr(gym_space, "low", gym_space.start)
+        setattr(gym_space, "high", (gym_space.start + gym_space.n))
+    elif isinstance(gym_space, spaces.MultiBinary):
+        setattr(gym_space, "is_discrete", True)
+        setattr(gym_space, "low", np.full(gym_space.shape, 0))
+        setattr(gym_space, "high", np.full(gym_space.shape, 2))
+    elif isinstance(gym_space, spaces.MultiDiscrete):
+        setattr(gym_space, "is_discrete", True)
+        setattr(gym_space, "low", np.zeros_like(gym_space.nvec))
+        setattr(gym_space, "high", np.array(gym_space.nvec))
+    else:
+        raise TypeError(f"Unrecognised gym space type: {type(gym_space)}")
 
 
 class Clock:
@@ -108,13 +155,37 @@ class BaseEnv(ABC):
         # self._infer_venv_attr()
 
     def _get_spaces(self, u_env):
-        raise NotImplementedError
+        """Helper to set the extra attributes to the observation and action spaces, then return them"""
+        observation_space = u_env.observation_space
+        action_space = u_env.action_space
+        set_gym_space_attr(observation_space)
+        set_gym_space_attr(action_space)
+        return observation_space, action_space
 
     def _get_observable_dim(self, observation_space):
-        raise NotImplementedError
+        """Get the observable dimension for an agent in the environment"""
+        state_dim = observation_space.shape
+        if isinstance(observation_space, spaces.MultiDiscrete):
+            # `.nvec` is an attribute which returns a NumPy array containing the number of discrete values for each
+            # dimension of the space.
+            state_dim = observation_space.nvec.tolist()
+        if len(state_dim) == 1:
+            # If the state is 1D, convert to a scalar
+            state_dim = state_dim[0]
+        return {"state_dim": state_dim}
 
     def _get_action_dim(self, action_space):
-        raise NotImplementedError
+        """Get the action dim for an action_space for agent to use"""
+        if isinstance(action_space, spaces.Box):
+            assert len(action_space.shape) == 1, "Only 1D action spaces are supported"
+            action_dim = action_space.shape[0]
+        elif isinstance(action_space, (spaces.Discrete, spaces.MultiBinary)):
+            action_dim = action_space.n
+        elif isinstance(action_space, spaces.MultiDiscrete):
+            action_dim = action_space.nvec.tolist()
+        else:
+            raise TypeError(f"Unrecognised action space type: {type(action_space)}")
+        return {"action_dim": action_dim}
 
     def _infer_frame_attr(self, spec):
         raise NotImplementedError
@@ -123,14 +194,20 @@ class BaseEnv(ABC):
         raise NotImplementedError
 
     def _is_discrete(self, action_space):
-        raise NotImplementedError
+        """Check whether the action space is discrete. All except Box are discrete"""
+        return get_class_name(action_space) != "Box"
 
     def _set_clock(self):
+        # If vectorised environments, tick with a multiple of num_envs to properly count frames
         self.clock_speed = 1 * (self.num_envs or 1)    # TODO: this line only salient for vectorised envs
         self.clock = Clock(max_frame=self.max_frame, clock_speed=self.clock_speed)
 
     def _set_attr_from_u_env(self, u_env):
-        raise NotImplementedError
+        """Set the observation and action dimensions, and the action type, from u_env"""
+        self.observation_space, self.action_space = self._get_spaces(u_env)
+        self.observable_dim = self._get_observable_dim(self.observation_space)
+        self.action_dim = self._get_action_dim(self.action_space)
+        self._is_discrete(self.action_space)
 
     def _update_total_reward(self, info):
         raise NotImplementedError
