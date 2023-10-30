@@ -1,5 +1,5 @@
 # tortoise-achilles-crab-lab
-First deep reinforcement learning library, working through the easier Gymnasium Classic Control and Box2D environments, and closely following Laura Graesser and Wah Loon Keng's book Foundations of Deep Reinforcement Learning and accompanying framework, SLM Lab. 
+First deep reinforcement learning library, working through the easier Gymnasium Classic Control and Box2D environments; closely following Laura Graesser and Wah Loon Keng's book Foundations of Deep Reinforcement Learning and reimplementing their accompanying framework, SLM Lab. 
 
 ## Agent-Environment implementation
 | Environment | Type | Training start | Training end | REINFORCE | SARSA | DQN | A2C | PPO | A3C | 
