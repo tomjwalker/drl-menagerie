@@ -46,7 +46,16 @@ class OpenAIEnv(BaseEnv):
         return state
 
     def step(self, action):
-        raise NotImplementedError
+        if not self.is_discrete and self.action_dim == 1:   # Guard for continuous with action_dim 1, make array
+            action = np.expand_dims(action, axis=-1)
+        state, reward, terminated, truncated, info = self.u_env.step(action)
+        # if self.to_render:
+        #     self.u_env.render()
+        # if not self.is_venv and self.clock.t > self.max_t:
+        if self.clock.t > self.max_t:
+            terminated = True
+        self.done = terminated
+        return state, reward, terminated, truncated, info
 
     def close(self):
         raise NotImplementedError
