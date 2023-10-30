@@ -91,3 +91,11 @@ def set_attr_from_dict(obj, attr_dict, keys=None):
         attr_dict = ps.pick(attr_dict, keys)
     for attr, val in attr_dict.items():
         setattr(obj, attr, val)
+
+
+def get_class_name(obj, lower=False):
+    """Returns the name of the class of the object"""
+    class_name = obj.__class__.__name__
+    if lower:
+        class_name = class_name.lower()
+    return class_name
