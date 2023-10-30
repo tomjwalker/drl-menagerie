@@ -46,6 +46,7 @@ class OpenAIEnv(BaseEnv):
         return state
 
     def step(self, action):
+        """Take a step in the environment and return the next state, reward, and whether the episode is terminated"""
         if not self.is_discrete and self.action_dim == 1:   # Guard for continuous with action_dim 1, make array
             action = np.expand_dims(action, axis=-1)
         state, reward, terminated, truncated, info = self.u_env.step(action)
@@ -58,4 +59,5 @@ class OpenAIEnv(BaseEnv):
         return state, reward, terminated, truncated, info
 
     def close(self):
-        raise NotImplementedError
+        """Close the environment"""
+        self.u_env.close()
