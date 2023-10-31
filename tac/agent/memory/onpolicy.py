@@ -7,6 +7,11 @@ class OnPolicyReplay(Memory):
 
         super().__init__(spec, agent)
 
+        self.dones = None
+        self.next_states = None
+        self.rewards = None
+        self.actions = None
+        self.states = None
         self.training_frequency = agent.algorithm.training_frequency
 
         self.is_episodic = True
@@ -90,8 +95,8 @@ class OnPolicyReplay(Memory):
 
 class OnPolicyBatchReplay(OnPolicyReplay):
 
-    def __init__(self, agent):
-        super().__init__(agent)
+    def __init__(self, spec, agent):
+        super().__init__(spec, agent)
         self.is_episodic = False
 
     def _add_experience(self, state, action, reward, next_state, done):
