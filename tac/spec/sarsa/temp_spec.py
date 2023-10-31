@@ -1,4 +1,5 @@
 spec = {
+    "name": "sarsa",
     "algorithm": "sarsa",
     "gamma": 0.99,
     "hidden_layer_units": [64],
@@ -18,4 +19,6 @@ spec = {
     "epsilon": 0.1,
     "training_frequency": 10,
     "memory": "on_policy",
+    "random_seed": 42,
+    "max_frame": 1000,
 }

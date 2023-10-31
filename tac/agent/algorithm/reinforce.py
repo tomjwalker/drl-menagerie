@@ -4,7 +4,7 @@ import torch
 import torch.nn as nn
 import matplotlib
 
-from tac.agent import activation_functions, optimisers
+from tac.agent.net import activation_functions, optimisers
 
 matplotlib.use('TkAgg')
 
@@ -49,6 +49,12 @@ class Reinforce:
 
         self.optimiser = optimisers.get(spec_dict["optimiser"])(self.model.parameters(), lr=spec_dict["learning_rate"])
         self.discount_factor = spec_dict["gamma"]
+
+        # TODO: currently unused
+        self.training_frequency = spec_dict["training_frequency"]
+
+        # TODO: CHECK 24/10/23
+        self.ready_to_train = False
 
     def on_policy_reset(self):
         """Resets the log_probs and rewards lists. Called at the start of each episode"""
@@ -98,3 +104,9 @@ class Reinforce:
         self.optimiser.step()  # Gradient ascent, since the loss is negated. Update the policy network's parameters
 
         return loss
+
+    def update(self, state, action, reward, next_state, done):
+        """Updates the agent after training"""
+        raise NotImplementedError(
+            "c.f. SLM Lab implementation - currently TAC does not have a body / explore_var attribute"
+        )

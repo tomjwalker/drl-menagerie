@@ -1,8 +1,13 @@
-class OnPolicyReplay:
+from tac.agent.memory.base import Memory
 
-    def __init__(self, agent):
 
-        self.training_frequency = agent.training_frequency
+class OnPolicyReplay(Memory):
+
+    def __init__(self, spec, agent):
+
+        super().__init__(spec, agent)
+
+        self.training_frequency = agent.algorithm.training_frequency
 
         self.is_episodic = True
         # Number of experiences stored in the replay buffer

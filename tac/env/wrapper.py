@@ -24,7 +24,7 @@ class TrackReward(gym.Wrapper):
         # key is not found
         # TODO: terminated rather than (in SLM-Lab) done
         real_terminated = info.get("was_real_done", False) or terminated
-        not_real_terminated = (1 -  real_terminated)
+        not_real_terminated = (1 - real_terminated)
         # If isnan and at done, reset total_reward from nan to 0 so it can be updated with the tracked_reward
         # TODO: understand all if statements, and streamline if possible
         if np.isnan(self.total_reward).any():
@@ -72,13 +72,15 @@ def make_gym_env(
     """
 
     env = gym.make(name)
+    observation, info = env.reset(seed=seed, options={})
 
-    if seed is not None:
-        # TODO: check linting error in line below
-        env.seed(seed)
-    if "NoFrameskip" in env.spec:    # Test for Atari environment
-        raise NotImplementedError("Atari environments not yet supported")
-    elif len(env.observation_space.shape) == 3:    # Test for image environment
+    # if seed is not None:
+    #     # TODO: check linting error in line below
+    #     env.seed(seed)
+    # if "NoFrameskip" in env.spec:    # Test for Atari environment
+    #     raise NotImplementedError("Atari environments not yet supported")
+    # elif len(env.observation_space.shape) == 3:    # Test for image environment
+    if len(env.observation_space.shape) == 3:    # Test for image environment
         raise NotImplementedError("Image environments not yet supported")
     else:    # Vector state environment
         if normalise_state:
