@@ -3,6 +3,7 @@
 
 SPEC_TEMPLATE = {
     "required_fields": {
+        "name": str,    # TODO: this will make more sense when algorithm/env/memory specs are sub-dicts of the spec
         "algorithm": str,
         "gamma": float,
         "hidden_layer_units": list,
@@ -14,12 +15,14 @@ SPEC_TEMPLATE = {
         "data_directory": str,
         "training_frequency": int,
         "memory": str,
+        "max_frame": int,
     },
     "optional_fields": {
         "num_sessions": int,
         "num_trials": int,
         "training_record_episodes": list,
         "search": dict,
+        "random_seed": int,
     }
 }
 
@@ -104,8 +107,3 @@ if __name__ == "__main__":
 
     run_type = _get_run_type(example_reinforce_spec)
     print(f"Run type: {run_type}")
-
-
-
-
-

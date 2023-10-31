@@ -1,4 +1,5 @@
 spec = {
+    "name": "reinforce",
     "algorithm": "reinforce",
     "gamma": 0.99,
     "hidden_layer_units": [64],
@@ -18,4 +19,6 @@ spec = {
     # TODO: this next is currently unused
     "training_frequency": 1,
     "memory": "on_policy",
+    "random_seed": 42,
+    "max_frame": 1000,
 }

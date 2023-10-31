@@ -20,7 +20,7 @@ def temp_initialise_log(spec_dict):
     """Temporary solution to generate a training log for plotting metrics. To be replaced with a more robust solution
     in the future"""
 
-    num_training_episodes = spec_dict.get("training_episodes")
+    max_frames = spec_dict.get("max_frame")
     metrics = [
         "loss",
         "total_reward",
@@ -29,7 +29,7 @@ def temp_initialise_log(spec_dict):
 
     # Generate a pandas DataFrame. Column names are `metrics`. Number of rows is `num_training_episodes`. Cells are
     # initially empty
-    training_log = pd.DataFrame(index=range(num_training_episodes), columns=metrics)
+    training_log = pd.DataFrame(index=range(max_frames), columns=metrics)
 
     return training_log
 

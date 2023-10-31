@@ -84,7 +84,7 @@ class Clock:
         raise NotImplementedError
 
     def get(self, unit="frame"):
-        raise getattr(self, unit)
+        return getattr(self, unit)
 
     def get_elapsed_wall_time(self):
         """
@@ -131,6 +131,10 @@ class BaseEnv(ABC):
         ))
 
         # Set attributes from spec
+        self.name = None    # Required. Set with _set_attr_from_dict method below
+        self.max_frame = None    # Required. Set with _set_attr_from_dict method below
+        self.environment = None    # Required. Set with _set_attr_from_dict method below
+        self.max_t = None    # Optional. Stated explicitly for linting purposes (in an OR clause in OpenAIEnv)
         set_attr_from_dict(self, spec, [
             "eval_frequency",
             "log_frequency",
@@ -141,6 +145,7 @@ class BaseEnv(ABC):
             "num_envs",
             "max_t",
             "max_frame",
+            "environment",    # TODO: replace with env_spec.name
         ])
 
         self._set_clock()
@@ -214,7 +219,14 @@ class BaseEnv(ABC):
         self.is_discrete(self.action_space)
 
     def _update_total_reward(self, info):
-        raise NotImplementedError
+        """Extract total_reward from info (set in wrapper) into self.total_reward"""
+        if isinstance(info, dict):
+            # `info` of dict type implies single environment
+            self.total_reward = info["total_reward"]
+        else:
+            # For vectorised environments, `info` is a tuple of info dicts
+            raise NotImplementedError("Vectorised environments not yet implemented")
+
 
     @abstractmethod
     def reset(self):
