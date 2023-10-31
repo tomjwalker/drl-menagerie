@@ -1,15 +1,16 @@
 import pytest
 from tac.agent.memory.onpolicy import OnPolicyReplay, OnPolicyBatchReplay
-from tac.agent.algorithm.reinforce import Reinforce
-from tac.spec.reinforce.temp_spec import spec
+from tac.spec.sarsa.temp_spec import spec
+
+from tac.experiment.control import make_agent_env
 
 
 class TestOnPolicyReplay:
 
     def test_update(self):
 
-        agent = Reinforce(spec_dict=spec, input_size=1, output_size=1)
-        replay = OnPolicyReplay(agent)
+        env, agent = make_agent_env(spec)
+        replay = OnPolicyReplay(spec, agent)
 
         replay.update(0, 0, 0, 0, False)
         replay.update(1, 2, 3, 4, False)
@@ -26,8 +27,8 @@ class TestOnPolicyReplay:
 
     def test_sample(self):
 
-        agent = Reinforce(spec_dict=spec, input_size=1, output_size=1)
-        replay = OnPolicyReplay(agent)
+        env, agent = make_agent_env(spec)
+        replay = OnPolicyReplay(spec, agent)
 
         replay.update(0, 0, 0, 0, False)
         replay.update(1, 2, 3, 4, False)
@@ -47,8 +48,8 @@ class TestOnPolicyBatchReplay:
 
     def test_update(self):
 
-        agent = Reinforce(spec_dict=spec, input_size=1, output_size=1)
-        replay = OnPolicyBatchReplay(agent)
+        env, agent = make_agent_env(spec)
+        replay = OnPolicyBatchReplay(spec, agent)
 
         replay.update(0, 0, 0, 0, False)
         replay.update(1, 2, 3, 4, False)
@@ -65,8 +66,8 @@ class TestOnPolicyBatchReplay:
 
     def test_sample(self):
 
-        agent = Reinforce(spec_dict=spec, input_size=1, output_size=1)
-        replay = OnPolicyBatchReplay(agent)
+        env, agent = make_agent_env(spec)
+        replay = OnPolicyBatchReplay(spec, agent)
 
         replay.update(0, 0, 0, 0, False)
         replay.update(1, 2, 3, 4, False)
