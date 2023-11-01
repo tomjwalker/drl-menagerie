@@ -1,63 +1,63 @@
 from abc import ABC, abstractmethod
 from tac.utils import api
-import numpy as np
 
 
 class Algorithm(ABC):
     """Abstract base class for reinforcement learning algorithms, to define the interface for all algorithms"""
 
     def __init__(self, agent):
+        self.agent = agent
         raise NotImplementedError
 
     @abstractmethod
     @api
     def init_algorithm_params(self):
-        '''Initialize other algorithm parameters'''
+        """Initialize other algorithm parameters"""
         raise NotImplementedError
 
     @abstractmethod
     @api
     def init_nets(self, global_nets=None):
-        '''Initialize the neural network from the spec_dict'''
+        """Initialize the neural network from the spec_dict"""
         raise NotImplementedError
 
     @api
     def calc_pdparam(self, x, net=None):
-        '''
+        """
         To get the pdparam for action policy sampling, do a forward pass of the appropriate net, and pick the correct
         outputs.
         The pdparam will be the logits for discrete prob. dist., or the mean and std for continuous prob. dist.
-        '''
+        """
         raise NotImplementedError
 
     @api
     def act(self, state):
-        '''Standard act method.'''
+        """Standard act method."""
         raise NotImplementedError
-        return action
+        # return action
 
     @abstractmethod
     @api
     def sample(self):
-        '''Samples a batch from memory'''
+        """Samples a batch from memory"""
         raise NotImplementedError
-        return batch
+        # return batch
 
     @abstractmethod
     @api
     def train(self):
-        '''Implement algorithm train, or throw NotImplementedError'''
+        """Implement algorithm train, or throw NotImplementedError"""
         raise NotImplementedError
 
     @abstractmethod
     @api
     def update(self):
-        '''Implement algorithm update, or throw NotImplementedError'''
+        """Implement algorithm update, or throw NotImplementedError"""
         raise NotImplementedError
 
     @api
     def save(self, ckpt=None):
-        '''Save net models for algorithm given the required property self.net_names'''
+        """Save net models for algorithm given the required property self.net_names"""
         # if not hasattr(self, 'net_names'):
         #     logger.info('No net declared in self.net_names in init_nets(); no models to save.')
         # else:
@@ -66,7 +66,7 @@ class Algorithm(ABC):
 
     @api
     def load(self):
-        '''Load net models for algorithm given the required property self.net_names'''
+        """Load net models for algorithm given the required property self.net_names"""
         # if not hasattr(self, 'net_names'):
         #     logger.info('No net declared in self.net_names in init_nets(); no models to load.')
         # else:
