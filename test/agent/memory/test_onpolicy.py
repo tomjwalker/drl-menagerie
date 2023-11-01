@@ -8,12 +8,19 @@ from tac.experiment.control import make_agent_env
 class TestOnPolicyReplay:
 
     def test_update(self):
-
         env, agent = make_agent_env(spec)
         replay = OnPolicyReplay(spec, agent)
 
+        # The updates below represent two completed episodes.
+        # For full test coverage, including the `if len(self.states) == self.training_frequency:` clause, need to set
+        # replay.training_frequency = 2 (overwrite from spec above) in order to trigger the ready_to_train flag.
+        # Then include an assert that replay.ready_to_train == True
+        replay.training_frequency = 2
+
         replay.update(0, 0, 0, 0, False)
         replay.update(1, 2, 3, 4, False)
+        # ...Check that the replay buffer is not ready to train yet...
+        assert replay.agent.algorithm.ready_to_train is False
         replay.update(5, 6, 7, 8, True)
         replay.update(20, 21, 22, 23, True)
 
@@ -25,8 +32,10 @@ class TestOnPolicyReplay:
         assert replay.next_states == [[0, 4, 8], [23]]
         assert replay.dones == [[False, False, True], [True]]
 
-    def test_sample(self):
+        # Check that the replay buffer is now ready to train
+        assert replay.agent.algorithm.ready_to_train is True
 
+    def test_sample(self):
         env, agent = make_agent_env(spec)
         replay = OnPolicyReplay(spec, agent)
 
@@ -47,12 +56,19 @@ class TestOnPolicyReplay:
 class TestOnPolicyBatchReplay:
 
     def test_update(self):
-
         env, agent = make_agent_env(spec)
         replay = OnPolicyBatchReplay(spec, agent)
 
+        # The updates below represent four frames.
+        # For full test coverage, including the `if len(self.states) == self.training_frequency:` clause, need to set
+        # replay.training_frequency = 2 (overwrite from spec above) in order to trigger the ready_to_train flag.
+        # Then include an assert that replay.ready_to_train == True
+        replay.training_frequency = 4
+
         replay.update(0, 0, 0, 0, False)
         replay.update(1, 2, 3, 4, False)
+        # ...Check that the replay buffer is not ready to train yet...
+        assert replay.agent.algorithm.ready_to_train is False
         replay.update(5, 6, 7, 8, True)
         replay.update(20, 21, 22, 23, True)
 
@@ -64,8 +80,10 @@ class TestOnPolicyBatchReplay:
         assert replay.next_states == [0, 4, 8, 23]
         assert replay.dones == [False, False, True, True]
 
-    def test_sample(self):
+        # Check that the replay buffer is now ready to train
+        assert replay.agent.algorithm.ready_to_train is True
 
+    def test_sample(self):
         env, agent = make_agent_env(spec)
         replay = OnPolicyBatchReplay(spec, agent)
 

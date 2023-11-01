@@ -49,7 +49,7 @@ class OnPolicyReplay(Memory):
             self.current_episode_data = {k: [] for k in self.data_keys}
             # If agent has collected the desired number of experiences, it is ready to train
             if len(self.states) == self.training_frequency:
-                self.agent.ready_to_train = True
+                self.agent.algorithm.ready_to_train = True
 
         # Track memory size and number of experiences seen
         self.size += 1
@@ -112,7 +112,7 @@ class OnPolicyBatchReplay(OnPolicyReplay):
         self.seen_size += 1
         # If agent has collected the desired number of experiences, it is ready to train
         if len(self.states) == self.training_frequency:
-            self.agent.ready_to_train = True
+            self.agent.algorithm.ready_to_train = True
 
     def sample(self):
         """
