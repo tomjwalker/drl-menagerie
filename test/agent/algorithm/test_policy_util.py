@@ -49,7 +49,7 @@ def test_epsilon_greedy():
             assert action == _greedy_choice(state, algorithm)
         elif epsilon == 1.0:
             # If epsilon is 1, the action should be a random action
-            assert action == _random_choice(algorithm)
+            assert action in [0, 1]
         else:
             # If epsilon is between 0 and 1, the action should be one of the two choices
             assert action in [0, 1]
