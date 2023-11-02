@@ -51,6 +51,16 @@ class Sarsa:
         To get the pdparam for action policy sampling, do a forward pass of the appropriate net, and pick the
         correct outputs. The pdparam will be the logits for discrete prob. dist., or the mean and std for continuous
         prob. dist.
+
+        Parameters
+        ----------
+        state: torch.tensor
+            The current state of the environment
+
+        Returns
+        -------
+        pdparam: torch.tensor
+            The logits for discrete prob. dist., or the mean and std for continuous prob. dist.
         """
         pdparam = self.net.forward(state)
         return pdparam
@@ -123,35 +133,10 @@ class Sarsa:
             return np.nan
 
     def update(self, state, action, reward, next_state, done):
-        """Updates the agent after training"""
+        """
+        Updates the algorithm after training.
+        In SLM-Lab, this means the epsilon / tau exploration variables if there is a schedule for decaying them.
+        """
         raise NotImplementedError(
             "c.f. SLM Lab implementation - currently TAC does not have a body / explore_var attribute"
         )
-
-
-# DEBUG
-
-from tac.spec.sarsa.temp_spec import spec
-from tac.agent.memory.onpolicy import OnPolicyBatchReplay
-
-if __name__ == "__main__":
-
-    env = gym.make(spec["environment"])
-    state_cardinality = env.observation_space.shape[0]
-    action_cardinality = env.action_space.n
-
-    sarsa = Sarsa(spec_dict=spec, input_size=1, output_size=1)
-
-    memory = OnPolicyBatchReplay(agent=sarsa)
-
-    # batch = memory.sample()
-    batch = {
-        "states": [[0.1, 0.2, 0.3], [-0.1, -0.2]],
-        "actions": [[0, 0, 1], [1, 0]],
-        "rewards": [[1, 1, 1], [1, 1]],
-        "next_states": [[0.2, 0.3, 0.2], [-0.2, -0.1]],
-        "dones": [[False, False, True], [False, True]],
-    }
-    batch = to_torch_batch(batch, is_episodic=True, device=None)
-
-    sarsa._calc_q_loss(batch)
