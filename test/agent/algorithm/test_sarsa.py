@@ -42,7 +42,23 @@ class TestSarsa:
         raise NotImplementedError
 
     def test_calc_pdparam(self):
-        raise NotImplementedError
+        # Create a mock network that returns predefined logits
+        class MockNetwork:
+            def forward(self, state):
+                # Replace with example logits
+                return torch.tensor([1.0, 2.0])
+
+        # Set up inputs
+        sarsa = Sarsa(spec_dict=SPEC_DICT, input_size=INPUT_SIZE, output_size=OUTPUT_SIZE)
+        sarsa.net = MockNetwork()
+        state = torch.tensor([0.1, 0.2, 0.3, 0.4])
+
+        # Function under test
+        pdparam = sarsa.calc_pdparam(state)
+
+        # Check that the output is as expected
+        expected_logits = torch.tensor([1.0, 2.0])
+        assert torch.allclose(pdparam, expected_logits, atol=1e-6)
 
     def test_act(self):
         raise NotImplementedError
