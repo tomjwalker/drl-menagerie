@@ -3,51 +3,81 @@
 
 SPEC_TEMPLATE = {
     "required_fields": {
-        "name": str,    # TODO: this will make more sense when algorithm/env/memory specs are sub-dicts of the spec
-        "algorithm": str,
-        "gamma": float,
-        "hidden_layer_units": list,
-        "learning_rate": float,
-        "environment": str,
-        "training_episodes": int,
-        "activation": str,
-        "optimiser": str,
-        "data_directory": str,
-        "training_frequency": int,
-        "memory": str,
-        "max_frame": int,
+        "name": str,
+        "algorithm_spec.name": str,
+        "algorithm_spec.gamma": float,
+        "algorithm_spec.training_frequency": int,
+        "memory_spec.name": str,
+        "net_spec.type": str,
+        "net_spec.hidden_layer_units": list,
+        "net_spec.activation": str,
+        "net_spec.optim_spec.name": str,
+        "net_spec.optim_spec.learning_rate": float,
+        "environment_spec.name": str,
+        "meta_spec.data_directory": str,
+        "meta_spec.max_frame": int
     },
     "optional_fields": {
-        "num_sessions": int,
-        "num_trials": int,
-        "training_record_episodes": list,
-        "search": dict,
-        "random_seed": int,
+        "algorithm_spec.action_pd_type": str,
+        "algorithm_spec.action_policy": str,
+        "algorithm_spec.explore_var_spec.epsilon": float,
+        "meta_spec.num_sessions": int,
+        "meta_spec.num_trials": int,
+        "meta_spec.random_seed": int,
     }
 }
 
 
-def _validate_spec(spec):
+def flatten_dict(d, parent_key='', sep='.'):
+    """
+    Given a nested dictionary, return a flattened dictionary with keys containing hierarchy.
+
+    Example
+    -------
+    d = {
+        "a": 1,
+        "b": {
+            "c": 2,
+            "d": 3,
+        },
+    }
+    flatten_dict(d) = {
+        "a": 1,
+        "b.c": 2,
+        "b.d": 3,
+    }
+    """
+    items = {}
+    for key, value in d.items():
+        new_key = f"{parent_key}{sep}{key}" if parent_key else key
+        if isinstance(value, dict):
+            items.update(flatten_dict(value, new_key, sep=sep))
+        else:
+            items[new_key] = value
+    return items
+
+
+def _validate_spec(spec, template, parent_key=""):
     """
     Validate the spec against the spec template. Check all required fields are present and of the correct type.
     Check all optional fields are of the correct type.
     """
+    required_fields = template["required_fields"]
+    optional_fields = template["optional_fields"]
 
-    # Check required fields
-    for field, field_type in SPEC_TEMPLATE["required_fields"].items():
+    for field, field_type in required_fields.items():
+        full_key = f"{parent_key}.{field}" if parent_key else field
         if field not in spec:
-            raise ValueError(f"Spec is missing required field: {field}")
+            raise ValueError(f"Spec is missing required field: {full_key}")
         if not isinstance(spec[field], field_type):
-            raise TypeError(f"Spec field {field} has incorrect type: {type(spec[field])}, should be {field_type}")
+            raise TypeError(f"Spec field {full_key} has incorrect type: {type(spec[field])}, should be {field_type}")
 
-    # Check optional fields
-    for field, field_type in SPEC_TEMPLATE["optional_fields"].items():
+    for field, field_type in optional_fields.items():
+        full_key = f"{parent_key}.{field}" if parent_key else field
         if field in spec:
             if not isinstance(spec[field], field_type):
-                raise TypeError(f"Spec field {field} has incorrect type: {type(spec[field])}, should be {field_type}")
+                raise TypeError(f"Spec field {full_key} has incorrect type: {type(spec[field])}, should be {field_type}")
 
-    # Check search field. If present, check it is a dict and that it contains at least one key. Check also that
-    # "num_trials" exists, and its value is 1 or greater.
     if "search" in spec:
         if not isinstance(spec["search"], dict):
             raise TypeError(f"Spec field search has incorrect type: {type(spec['search'])}, should be dict")
@@ -76,34 +106,19 @@ def _get_run_type(spec):
 
 def analyse_spec(spec):
     """Validates spec, then returns run type"""
-    _validate_spec(spec)
+    _validate_spec(spec, template=SPEC_TEMPLATE)
     return _get_run_type(spec)
 
 
 # Demonstrate the utility functions on an example spec
 if __name__ == "__main__":
 
-    example_reinforce_spec = {
-        "algorithm": "reinforce",
-        "gamma": 0.99,
-        "hidden_layer_units": [64],
-        "learning_rate": 0.01,
-        "environment": "CartPole-v1",
-        "training_episodes": 20,
-        "activation": "relu",
-        "optimiser": "adam",
-        # "training_record_episodes": [0, 100, 499],
-        "data_directory": ".data",
-        "num_sessions": 2,
-        "num_trials": 2,
-        "search": {
-            "learning_rate__choice": [0.01, 0.001],
-            "gamma__uniform": [0.5, 1.0],
-        }
-    }
+    from tac.spec.sarsa.temp_spec import spec as example_sarsa_spec
 
-    _validate_spec(example_reinforce_spec)
+    flattened_spec = flatten_dict(example_sarsa_spec)
+
+    _validate_spec(flattened_spec, template=SPEC_TEMPLATE)
     print("Spec validated successfully")
 
-    run_type = _get_run_type(example_reinforce_spec)
+    run_type = _get_run_type(example_sarsa_spec)
     print(f"Run type: {run_type}")
