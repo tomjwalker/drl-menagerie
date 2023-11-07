@@ -12,14 +12,14 @@ First deep reinforcement learning library, working through the easier Gymnasium 
 | Bipedal Walker | Box2D |  |  |  |  |  |  |  |
 
 ## DRL Algorithms
-| Agent | Implemented? | Type | Pros | Cons | Notes |
-| :---: | :---: | :---: | :---: | :---: | :---: |
-| REINFORCE | ✓ | `Policy gradient` | - Smooth action probability distribution (vs e.g. discontinuous e-greedy) <br> - Policy potentially simpler function to approximate than value functions <br> - Can approach deterministic policy | - High variance (without baseline) <br> - Sample inefficient <br>  -No guarantee of efficient exploration | Only simplest version implemented: next implement version with baseline  |
-| SARSA |  | `Value-based` |  | - Limited to discrete action spaces |  |
-| DQN |  | `Value-based` |  | - Limited to discrete action spaces |  |
-| A2C |  |  |  |  |  |
-| PPO |  |  |  |  |  |
-| A3C |  |  |  |  |  |
+| Agent | Implemented? | Type | On / off policy | Pros | Cons | Notes |
+| :---: | :---: | :---: | :---: | :---: | :---: | :---: |
+| REINFORCE | ✓ | `Policy gradient` | `On` | - Smooth action probability distribution (vs e.g. discontinuous e-greedy) <br> - Policy potentially simpler function to approximate than value functions <br> - Can approach deterministic policy | - High variance (without baseline) <br> - Sample inefficient <br>  -No guarantee of efficient exploration | Only simplest version implemented: next implement version with baseline  |
+| SARSA |  | `Value-based` | `On` |  | - Limited to discrete action spaces |  |
+| DQN |  | `Value-based` | `Off` |  | - Limited to discrete action spaces |  |
+| A2C |  |  |  |  |  |  |
+| PPO |  |  |  |  |  |  |
+| A3C |  |  |  |  |  |  |
 
 ## Nomenclature
 | Symbol / name | Meaning |
