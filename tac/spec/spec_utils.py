@@ -10,7 +10,8 @@ SPEC_TEMPLATE = {
         "memory_spec.name": str,
         "net_spec.type": str,
         "net_spec.hidden_layer_units": list,
-        "net_spec.activation": str,
+        "net_spec.hidden_layer_activation": str,
+        "net_spec.loss_spec.name": str,
         "net_spec.optim_spec.name": str,
         "net_spec.optim_spec.learning_rate": float,
         "environment_spec.name": str,
@@ -65,6 +66,9 @@ def _validate_spec(spec, template, parent_key=""):
     required_fields = template["required_fields"]
     optional_fields = template["optional_fields"]
 
+    # Flatten the spec dictionary within this function, so that keys can be checked against the template
+    spec = flatten_dict(spec)
+
     for field, field_type in required_fields.items():
         full_key = f"{parent_key}.{field}" if parent_key else field
         if field not in spec:
@@ -114,10 +118,10 @@ def analyse_spec(spec):
 if __name__ == "__main__":
 
     from tac.spec.sarsa.temp_spec import spec as example_sarsa_spec
+    #
+    # flattened_spec = flatten_dict(example_sarsa_spec)
 
-    flattened_spec = flatten_dict(example_sarsa_spec)
-
-    _validate_spec(flattened_spec, template=SPEC_TEMPLATE)
+    _validate_spec(example_sarsa_spec, template=SPEC_TEMPLATE)
     print("Spec validated successfully")
 
     run_type = _get_run_type(example_sarsa_spec)

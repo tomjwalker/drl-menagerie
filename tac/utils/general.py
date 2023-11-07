@@ -20,7 +20,7 @@ def temp_initialise_log(spec_dict):
     """Temporary solution to generate a training log for plotting metrics. To be replaced with a more robust solution
     in the future"""
 
-    max_frames = spec_dict.get("max_frame")
+    max_frames = spec_dict["meta_spec"]["max_frame"]
     metrics = [
         "loss",
         "total_reward",
@@ -70,6 +70,9 @@ def to_torch_batch(batch, is_episodic, device=None):
 
     if is_episodic:
         # Flatten each value of the dictionary into a single numpy array
+        if type(batch.items()) is int:
+            raise TypeError("batch.items() is an int")
+        # Flattens values which are lists of lists into a single list
         batch = {k: np.array([item for sublist in v for item in sublist]) for k, v in batch.items()}
         # Then convert each element of the batch to a PyTorch tensor, and move to the specified device
         batch = {k: torch.tensor(v, device=device) for k, v in batch.items()}

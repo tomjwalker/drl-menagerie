@@ -4,7 +4,7 @@ spec = {
     "gamma": 0.99,
     "hidden_layer_units": [64],
     "learning_rate": 0.01,
-    "environment": "CartPole-v1",
+    "env": "CartPole-v1",
     "training_episodes": 20,
     "activation": "relu",
     "optimiser": "adam",

@@ -57,18 +57,18 @@ def make_gym_env(
         episode_life=True,
 ):
     """
-    General method to create any Gym environment from a name.
+    General method to create any Gym env from a name.
 
     TODO: check below:
-    :param name: name of the gym environment to make
-    :param seed: random seed to use for the environment
-    :param frame_op: frame operation to apply to the environment
-    :param frame_op_len: length of the frame operation to apply to the environment
+    :param name: name of the gym env to make
+    :param seed: random seed to use for the env
+    :param frame_op: frame operation to apply to the env
+    :param frame_op_len: length of the frame operation to apply to the env
     :param image_downsize: size to downsize the image to
-    :param reward_scale: reward scale to apply to the environment
+    :param reward_scale: reward scale to apply to the env
     :param normalise_state: whether to normalise the state
     :param episode_life: whether to terminate episodes when a life is lost
-    :return: gym environment
+    :return: gym env
     """
 
     env = gym.make(name)
@@ -77,12 +77,12 @@ def make_gym_env(
     # if seed is not None:
     #     # TODO: check linting error in line below
     #     env.seed(seed)
-    # if "NoFrameskip" in env.spec:    # Test for Atari environment
+    # if "NoFrameskip" in env.spec:    # Test for Atari env
     #     raise NotImplementedError("Atari environments not yet supported")
-    # elif len(env.observation_space.shape) == 3:    # Test for image environment
-    if len(env.observation_space.shape) == 3:    # Test for image environment
+    # elif len(env.observation_space.shape) == 3:    # Test for image env
+    if len(env.observation_space.shape) == 3:    # Test for image env
         raise NotImplementedError("Image environments not yet supported")
-    else:    # Vector state environment
+    else:    # Vector state env
         if normalise_state:
             raise NotImplementedError("State normalisation not yet supported")
         if frame_op is not None:
