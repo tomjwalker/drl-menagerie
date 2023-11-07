@@ -8,7 +8,7 @@ from tac.utils.general import set_filepath
 
 
 def record_agent(agent, spec_dict, episode):
-    """Records the agent's performance in the environment, and saves the recording to a file"""
+    """Records the agent's performance in the env, and saves the recording to a file"""
 
     # TODO: hack. Check whether there is a better way to do this. Done because the agent's net is a PyTorch nn, and
     #   there are potentially complications around nn.Module.train() and nn.Module.eval()
@@ -21,10 +21,10 @@ def record_agent(agent, spec_dict, episode):
     root_dir = spec_dict.get("monitor_dir", ".data")
     episode_dir = set_filepath(root_dir + f"/training_episode_{episode}")
 
-    # Initialise a separate instance of the environment for recording the video
-    video_env = gym.make(spec_dict.get("environment"), render_mode="rgb_array_list")
+    # Initialise a separate instance of the env for recording the video
+    video_env = gym.make(spec_dict.get("env"), render_mode="rgb_array_list")
 
-    # Run the agent in the environment
+    # Run the agent in the env
 
     episode_frames = []
     for t in range(num_episodes):

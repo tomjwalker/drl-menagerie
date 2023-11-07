@@ -14,22 +14,23 @@ class Agent:
 
     def __init__(self, spec, env):
         self.spec = spec
-        self.name = spec["algorithm"]
+        # self.agent_spec = spec["agent"]    # Dropping index (unlike SLM Lab), as currently only set up for single agent
+        self.name = self.spec["name"]
         self.env = env
         self.loss = np.nan
 
         # Initialise algorithm
-        algorithm_class = algorithm_classes[spec["algorithm"]]
-        state_cardinality = self.env.observation_space.shape[0]
-        action_cardinality = self.env.action_space.n
-        self.algorithm = algorithm_class(spec, state_cardinality, action_cardinality)
+        algorithm_class = algorithm_classes[spec["algorithm_spec"]["name"]]
+        self.state_cardinality = self.env.observation_space.shape[0]
+        self.action_cardinality = self.env.action_space.n
+        self.algorithm = algorithm_class(self)
 
         # Initialise memory
-        memory_class = memory_classes[spec["memory"]]
+        memory_class = memory_classes[spec["memory_spec"]["name"]]
         self.memory = memory_class(spec, self)
 
     def act(self, state):
-        """Interface for the act method from the algorithm class. Given an environment state, returns an action"""
+        """Interface for the act method from the algorithm class. Given an env state, returns an action"""
         # Gradients only calculated in algorithm.train
         with torch.no_grad():
             action = self.algorithm.act(state)

@@ -33,7 +33,7 @@ def epsilon_greedy(state, algorithm):
     Parameters
     ----------
     state: torch.tensor
-        The current state of the environment
+        The current state of the env
     algorithm: tac.agent.algorithm.base.Algorithm
         The algorithm object, which contains the policy network. It can be an instance of any Algorithm subclass.
 
@@ -42,7 +42,8 @@ def epsilon_greedy(state, algorithm):
     action: torch.tensor
     """
     epsilon = algorithm.epsilon
-    if epsilon > np.random.rand():
+    random_float = np.random.rand()
+    if random_float < epsilon:
         return _random_choice(algorithm)
     else:
         return _greedy_choice(state, algorithm)

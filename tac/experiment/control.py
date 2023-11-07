@@ -39,7 +39,7 @@ def get_search_space(spec):
 
 def make_agent_env(spec):
 
-    # Instantiate environment from spec
+    # Instantiate env from spec
     env = make_env(spec)
 
     # TODO: remove this comment block once Reinforce has been refactored to fit the same template as SARSA
@@ -103,10 +103,10 @@ class Session:
         done = False
         # Infinite loop: run until a break is reached when the current timestep is equal to or greater than the max
         while True:
-            print(f"Frame number: {clock.get()}")
+            # print(f"Frame number: {clock.get()}")
 
             if done:
-                # If current timestep is less than total max frames / steps for training, then reset the environment and
+                # If current timestep is less than total max frames / steps for training, then reset the env and
                 # continue training with a new episode
                 if clock.get() < clock.max_frame:
                     clock.tick("epi")    # Increment episode counter

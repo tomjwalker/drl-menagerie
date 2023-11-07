@@ -119,6 +119,9 @@ class BaseEnv(ABC):
 
     def __init__(self, spec):
 
+        self.env_spec = spec["environment_spec"]
+        self.meta_spec = spec["meta_spec"]
+
         # Set default attributes
         set_attr_from_dict(self, dict(
             eval_frequency=10000,
@@ -130,22 +133,25 @@ class BaseEnv(ABC):
             num_envs=1,
         ))
 
-        # Set attributes from spec
+        # Set attributes from specs
         self.name = None    # Required. Set with _set_attr_from_dict method below
         self.max_frame = None    # Required. Set with _set_attr_from_dict method below
-        self.environment = None    # Required. Set with _set_attr_from_dict method below
+        # self.env = None    # Required. Set with _set_attr_from_dict method below
         self.max_t = None    # Optional. Stated explicitly for linting purposes (in an OR clause in OpenAIEnv)
-        set_attr_from_dict(self, spec, [
+        set_attr_from_dict(self, self.meta_spec, [
             "eval_frequency",
             "log_frequency",
+        ])
+        set_attr_from_dict(self, self.env_spec, [
             "name",
+            "frame_op",
             "frame_op_len",
             "normalise_state",
             "reward_scale",
             "num_envs",
             "max_t",
             "max_frame",
-            "environment",    # TODO: replace with env_spec.name
+            # "env",    # TODO: replace with env_spec.name
         ])
 
         self._set_clock()
@@ -170,7 +176,7 @@ class BaseEnv(ABC):
 
     @staticmethod
     def _get_observable_dim(observation_space):
-        """Get the observable dimension for an agent in the environment"""
+        """Get the observable dimension for an agent in the env"""
         state_dim = observation_space.shape
         if isinstance(observation_space, spaces.MultiDiscrete):
             # `.nvec` is an attribute which returns a NumPy array containing the number of discrete values for each
@@ -209,7 +215,7 @@ class BaseEnv(ABC):
     def _set_clock(self):
         # If vectorised environments, tick with a multiple of num_envs to properly count frames
         self.clock_speed = 1 * (self.num_envs or 1)    # TODO: this line only salient for vectorised envs
-        self.clock = Clock(max_frame=self.max_frame, clock_speed=self.clock_speed)
+        self.clock = Clock(max_frame=self.meta_spec["max_frame"], clock_speed=self.clock_speed)
 
     def _set_attr_from_u_env(self, u_env):
         """Set the observation and action dimensions, and the action type, from u_env"""
@@ -221,7 +227,7 @@ class BaseEnv(ABC):
     def _update_total_reward(self, info):
         """Extract total_reward from info (set in wrapper) into self.total_reward"""
         if isinstance(info, dict):
-            # `info` of dict type implies single environment
+            # `info` of dict type implies single env
             self.total_reward = info["total_reward"]
         else:
             # For vectorised environments, `info` is a tuple of info dicts
@@ -230,15 +236,15 @@ class BaseEnv(ABC):
 
     @abstractmethod
     def reset(self):
-        """Resets the environment and returns the state"""
+        """Resets the env and returns the state"""
         raise NotImplementedError
 
     @abstractmethod
     def step(self, action):
-        """Takes an action in the environment, and returns the next state, reward, done and info"""
+        """Takes an action in the env, and returns the next state, reward, done and info"""
         raise NotImplementedError
 
     @abstractmethod
     def close(self):
-        """Method to close and clean up the environment"""
+        """Method to close and clean up the env"""
         raise NotImplementedError

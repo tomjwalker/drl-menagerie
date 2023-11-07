@@ -5,9 +5,18 @@ from tac.utils import api
 class Algorithm(ABC):
     """Abstract base class for reinforcement learning algorithms, to define the interface for all algorithms"""
 
-    def __init__(self, agent):
+    def __init__(self, agent, global_nets=None):
+        # TODO: with flat spec, currently different to SLM Lab implementation
         self.agent = agent
-        raise NotImplementedError
+        self.algorithm_spec = agent.spec["algorithm_spec"]
+        self.name = self.algorithm_spec["name"]
+        self.memory_spec = agent.spec["memory_spec"]
+        self.net_spec = agent.spec["net_spec"]
+
+        self.init_algorithm_params()
+
+        # TODO
+        self.init_nets(global_nets)
 
     @abstractmethod
     @api
@@ -18,7 +27,7 @@ class Algorithm(ABC):
     @abstractmethod
     @api
     def init_nets(self, global_nets=None):
-        """Initialize the neural network from the spec_dict"""
+        """Initialize the neural network from the net_spec"""
         raise NotImplementedError
 
     @api

@@ -15,9 +15,9 @@ class OpenAIEnv(BaseEnv):
         #     raise NotImplementedError("Vectorised environments not yet supported")
         # else:
         self.u_env = make_gym_env(
-            name=self.environment,    # TODO: replace with env_spec.name
+            name=self.env_spec["name"],
             # num_envs=self.num_envs,
-            seed=self.seed,
+            seed=self.meta_spec["random_seed"],
             # frame_op=self.frame_op,
             # frame_op_len=self.frame_op_len,
             # image_downsize=self.image_downsize,
@@ -31,13 +31,13 @@ class OpenAIEnv(BaseEnv):
         self._set_attr_from_u_env(self.u_env)
         # TODO: check next line
         self.max_t = self.max_t or self.u_env.spec.max_episode_steps
-        assert self.max_t is not None, "max_t not specified in spec or environment"
+        assert self.max_t is not None, "max_t not specified in spec or env"
 
     def seed(self, seed):
         self.u_env.seed(seed)
 
     def reset(self):
-        """Reset the environment and return the initial state"""
+        """Reset the env and return the initial state"""
         # TODO: check done or terminated
         self.done = False
         state = self.u_env.reset()
@@ -46,7 +46,7 @@ class OpenAIEnv(BaseEnv):
         return state
 
     def step(self, action):
-        """Take a step in the environment and return the next state, reward, and whether the episode is terminated"""
+        """Take a step in the env and return the next state, reward, and whether the episode is terminated"""
         if not self.is_discrete and self.action_dim == 1:   # Guard for continuous with action_dim 1, make array
             action = np.expand_dims(action, axis=-1)
         state, reward, terminated, truncated, info = self.u_env.step(action)
@@ -60,5 +60,5 @@ class OpenAIEnv(BaseEnv):
         return state, reward, terminated, truncated, info
 
     def close(self):
-        """Close the environment"""
+        """Close the env"""
         self.u_env.close()

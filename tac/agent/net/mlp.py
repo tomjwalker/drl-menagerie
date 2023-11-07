@@ -1,52 +1,69 @@
+import numpy as np
 from torch import nn as nn
 
 from tac.agent.net import activation_functions
+from tac.agent.net.base import Net
+from tac.agent.net.net_util import build_fc_model, init_layers, get_loss_fn
+from tac.utils.general import set_attr_from_dict
+
+import pydash as ps
 
 
-class MLPNet(nn.Module):
+class MLPNet(Net, nn.Module):
 
-    def __init__(self, spec_dict, input_size, output_size):
-        super(MLPNet, self).__init__()
+    def __init__(self, net_spec, input_size, output_size):
+
+        nn.Module.__init__(self)
+        super().__init__(net_spec, input_size, output_size)
+
+        # Set default attributes
+        set_attr_from_dict(self, dict(
+            out_layer_activation=None,
+            init_fn=None,
+            clip_grad_val=None,
+            loss_spec={"name": "MSELoss"},
+            optim_spec={"name": "adam"},
+            lr_scheduler_spec=None,
+            update_type="replace",
+            update_frequency=1,
+            polyak_coef=0.0,
+            gpu=False,
+        ))
+        # Overwrite default values with any values from spec file
+        set_attr_from_dict(self, net_spec, keys=[
+            "shared",
+            "hidden_layer_units",
+            "hidden_layer_activation",
+            "init_fn",
+            "clip_grad_val",
+            "lr_scheduler_spec",
+            "update_type",
+            "update_frequency",
+            "polyak_coef",
+            "gpu",
+        ])
+
+        # Model body (all except the output layer)
+        dims = [self.in_dim] + self.hidden_layer_units    # List of units, including input and hidden layers
+        self.model = build_fc_model(dims, activation=self.hidden_layer_activation)
 
         layers = []
 
-        num_hidden_layers = len(spec_dict["hidden_layer_units"])
+        # Output layer (model tail).
+        if isinstance(self.out_dim, (int, np.int64)):
+            self.model_tail = build_fc_model([dims[-1], self.out_dim], activation=self.out_layer_activation)
+        else:
+            raise NotImplementedError("Only integer output dimensions are currently supported (single tail).")
 
-        # Input layer
-        layers.append(nn.Linear(input_size, spec_dict["hidden_layer_units"][0]))
-        layers.append(activation_functions.get(spec_dict["activation"])())
-
-        # Hidden layers
-        for i in range(num_hidden_layers - 1):
-            layers.append(nn.Linear(spec_dict["hidden_layer_units"][i], spec_dict["hidden_layer_units"][i + 1]))
-            layers.append(activation_functions.get(spec_dict["activation"])())
-
-        # Output layer
-        layers.append(nn.Linear(spec_dict["hidden_layer_units"][-1], output_size))
-
-        self.model = nn.Sequential(*layers)
-
+        init_layers(self, self.init_fn)    # Initialise the weights of the layers of the network
+        self.loss_fn = get_loss_fn(self.loss_spec)    # Get the loss function (e.g. MSELoss)
+        self.to(self.device)   # Move the network to the GPU (if available)
         self.train()  # Set the module in training mode. Inherited from nn.Module. Relevant for dropout and BatchNorm
 
     def forward(self, x):
-        return self.model(x)
-
-    def train_step(self, loss, optimiser):
-        """
-        Performs a single training step. This is a backward pass, followed by a gradient update.
-
-        Arguments:
-        ----------
-        loss: torch.Tensor
-            The loss to be minimised
-        optimiser: torch.optim.Optimiser
-            The optimiser to use for the gradient update
-        """
-        # optimiser.zero_grad() clears the gradients of all optimisable variables, from the previous time step
-        optimiser.zero_grad()
-        # loss.backward() computes the gradient of the loss w.r.t. all optimisable variables, del(loss)/del(theta)
-        loss.backward()
-        # optimiser.step() updates the value of the optimisable variables, using the gradients computed in the previous
-        # step
-        optimiser.step()
-        return loss
+        x = self.model(x)
+        x = self.model_tail(x)
+        # TODO: hack to fix Torch double/float issue (
+        #  https://stackoverflow.com/questions/67456368/pytorch-getting-runtimeerror-found-dtype-double-but-expected-float)
+        x = x.double()
+        return x
