@@ -19,8 +19,8 @@ First deep reinforcement learning library, working through the easier Gymnasium 
 | DQN |  | `Value-based` | `Off` | ✓ |  |  | ✓ |  |  | - Limited to discrete action spaces |  |
 | DDQN |  | `Value-based` | `Off` | ✓ |  |  | ✓ |  |  | - Limited to discrete action spaces |  |
 | DDQN + PER |  | `Value-based` | `Off` | ✓ |  |  | ✓ |  |  | - Limited to discrete action spaces |  |
-| A2C |  | `Combined` | `On` | ✓ | ✓ | ✓ |  | ✓ |  |  |  |
-| PPO |  | `Combined` | `On` | ✓ | ✓ | ✓ |  | ✓ |  |  |  |
+| A2C |  | `Combined` | `On` | ✓ | ✓ | ✓ |  | ✓ | - Learnt reinforcement signal (from value function) can be more informative for a policy (dense) than (sparse) reward  <br> - Lower variance than Monte Carlo estimate of return (c.f. Reinforce) <br> - Increased sample efficiency over REINFORCE due to dense signal from value fn | - Training more complex - until value function generates reasonable signals, action selection is challenging |  |
+| PPO |  | `Combined` | `On` | ✓ | ✓ | ✓ |  | ✓ | - Addresses performance collapse issue of simpler policy gradient algos (due to sensitivity to step size param during gradient ascent) <br> - Replaces A2C objective with a surrogate objective considering both pre-opt-step and post- policy networks <br> - More sample efficient than other policy methods | - (Common with other policy optimisation methods) risk of limited exploration <br> - Computational intensity <br> - Potential for conservative updates, which can slow learning time |  |
 
 
 ## Nomenclature
