@@ -6,5 +6,5 @@
 5. Observe reward R_t from environment
 6. Calculate policy gradient del(J)
 7. **end for**
-8. Gradient ascent: $\theta <= \theta + \alpha \cdot \grad J(\pi_{\theta})$
+8. Gradient ascent: $\theta \leftarrow \theta + \alpha \cdot \nabla J(\pi_{\theta})$
 9. **end for**       
