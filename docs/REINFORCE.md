@@ -1,2 +1,2 @@
 
-1.  **Initialise** learning rate $\alpha$
+1.    **Initialise** learning rate $\alpha$
