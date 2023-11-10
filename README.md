@@ -14,12 +14,14 @@ First deep reinforcement learning library, working through the easier Gymnasium 
 ## DRL Algorithms
 | Agent | Implemented? | Type | On / off policy | Action space // Discrete | Action space // Continuous | Learnt fn // v_pi | Learnt fn // q_pi | Learnt fn // pi | Pros | Cons | Notes |
 | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
-| REINFORCE | ✓ | `Policy gradient` | `On` |  |  |  |  |  | - Smooth action probability distribution (vs e.g. discontinuous e-greedy) <br> - Policy potentially simpler function to approximate than value functions <br> - Can approach deterministic policy | - High variance (without baseline) <br> - Sample inefficient <br>  -No guarantee of efficient exploration | Only simplest version implemented: next implement version with baseline  |
-| SARSA |  | `Value-based` | `On` |  |  |  |  |  |  | - Limited to discrete action spaces |  |
-| DQN |  | `Value-based` | `Off` |  |  |  |  |  |  | - Limited to discrete action spaces |  |
-| A2C |  |  |  |  |  |  |  |  |  |  |  |
-| PPO |  |  |  |  |  |  |  |  |  |  |  |
-| A3C |  |  |  |  |  |  |  |  |  |  |  |
+| REINFORCE | ✓ | `Policy gradient` | `On` | ✓ | ✓ |  |  | ✓ | - Smooth action probability distribution (vs e.g. discontinuous e-greedy) <br> - Policy potentially simpler function to approximate than value functions <br> - Can approach deterministic policy | - High variance (without baseline) <br> - Sample inefficient <br>  -No guarantee of efficient exploration | Only simplest version implemented: next implement version with baseline  |
+| SARSA |  | `Value-based` | `On` | ✓ |  |  | ✓ |  |  | - Limited to discrete action spaces |  |
+| DQN |  | `Value-based` | `Off` | ✓ |  |  | ✓ |  |  | - Limited to discrete action spaces |  |
+| DDQN |  | `Value-based` | `Off` | ✓ |  |  | ✓ |  |  | - Limited to discrete action spaces |  |
+| DDQN + PER |  | `Value-based` | `Off` | ✓ |  |  | ✓ |  |  | - Limited to discrete action spaces |  |
+| A2C |  | `Combined` | `On` | ✓ | ✓ | ✓ |  | ✓ |  |  |  |
+| PPO |  | `Combined` | `On` | ✓ | ✓ | ✓ |  | ✓ |  |  |  |
+
 
 ## Nomenclature
 | Symbol / name | Meaning |
