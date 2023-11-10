@@ -6,7 +6,7 @@
 6. &ensp;&ensp;&ensp;&ensp; **Initialise** experience replay memory, with max size K
 7. &ensp;&ensp;&ensp;&ensp; **Initialise** according to init method, weights for value network $q_{\theta}$
 8. &ensp;&ensp;&ensp;&ensp; **for** m = 0, ..., MAX_STEPS **do**:
-9. &ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp; Gather and store `h` experiences $(S_i, A_i, R-i, S'_i)$ using current policy
+9. &ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp; Gather and store `h` experiences $(S_i, A_i, R_i, S'_i)$ using current policy
 10. &ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp; **for** b = 0, ..., B, **do**:
 11. &ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp; Sample a batch of experiences from experience replay memory
 12. &ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp; **for** u = 0, ..., U, **do**:    # Do U updates with current batch
