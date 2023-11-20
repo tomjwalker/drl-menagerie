@@ -25,6 +25,7 @@ SPEC_TEMPLATE = {
         "meta_spec.num_sessions": int,
         "meta_spec.num_trials": int,
         "meta_spec.random_seed": int,
+        "search_spec.name": str,
     }
 }
 
@@ -82,14 +83,15 @@ def _validate_spec(spec, template, parent_key=""):
             if not isinstance(spec[field], field_type):
                 raise TypeError(f"Spec field {full_key} has incorrect type: {type(spec[field])}, should be {field_type}")
 
-    if "search" in spec:
-        if not isinstance(spec["search"], dict):
+    if "search_spec" in spec:
+        if not isinstance(spec["search_spec"], dict):
             raise TypeError(f"Spec field search has incorrect type: {type(spec['search'])}, should be dict")
-        if len(spec["search"]) == 0:
+        if len(spec["search_spec"]) == 0:
             raise ValueError("Spec field search is empty")
-        if "num_trials" not in spec:
+        if "meta_spec.num_trials" not in spec:
             raise ValueError(
-                "Spec field 'search' is present, indicating an experiment, but 'num_trials' is not specified"
+                "Spec field 'search_spec' is present, indicating an experiment, but 'meta_spec.num_trials' is not "
+                "specified"
             )
 
 
@@ -100,9 +102,9 @@ def _get_run_type(spec):
     - If no "search" field exists, but a "num_sessions" field exists whose value is greater than 1, then the run type
       is "trial".
     """
-    if "search" in spec:
+    if "search_spec" in spec:
         return "experiment"
-    elif "num_sessions" in spec and spec["num_sessions"] > 1:
+    elif "num_sessions" in spec["meta_spec"] and spec["meta_spec"]["num_sessions"] > 1:
         return "trial"
     else:
         return "session"
