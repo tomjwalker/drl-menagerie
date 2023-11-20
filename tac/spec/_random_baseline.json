@@ -1,0 +1,75 @@
+{
+  "tabular/CliffWalking-v0": {
+    "mean_return": -59556.98,
+    "std_return": 57831.00515882115
+  },
+  "tabular/Blackjack-v0": {
+    "mean_return": -0.36,
+    "std_return": 0.9002221947941518
+  },
+  "Taxi-v3": {
+    "mean_return": -779.03,
+    "std_return": 77.40057557925522
+  },
+  "CliffWalking-v0": {
+    "mean_return": -69344.17,
+    "std_return": 72668.30906468858
+  },
+  "FrozenLake8x8-v1": {
+    "mean_return": 0.0,
+    "std_return": 0.0
+  },
+  "FrozenLake-v1": {
+    "mean_return": 0.01,
+    "std_return": 0.09949874371066199
+  },
+  "Blackjack-v1": {
+    "mean_return": -0.39,
+    "std_return": 0.8932524839036274
+  },
+  "BipedalWalkerHardcore-v3": {
+    "mean_return": -106.51459543509277,
+    "std_return": 10.187737473027097
+  },
+  "BipedalWalker-v3": {
+    "mean_return": -98.49819373005643,
+    "std_return": 13.07546782439769
+  },
+  "LunarLanderContinuous-v2": {
+    "mean_return": -218.2264749011928,
+    "std_return": 129.72407949803835
+  },
+  "LunarLander-v2": {
+    "mean_return": -185.62155493927142,
+    "std_return": 105.91147032910915
+  },
+  "phys2d/Pendulum-v0": {
+    "mean_return": -1217.478566982037,
+    "std_return": 294.5864604159524
+  },
+  "phys2d/CartPole-v0": {
+    "mean_return": 24.93,
+    "std_return": 13.985889317451358
+  },
+  "Acrobot-v1": {
+    "mean_return": -499.91,
+    "std_return": 0.8954886933959582
+  },
+  "Pendulum-v1": {
+    "mean_return": -1189.2032046277538,
+    "std_return": 276.3593048251626
+  },
+  "MountainCarContinuous-v0": {
+    "mean_return": -32.43787397298098,
+    "std_return": 10.519723718836971
+  },
+  "MountainCar-v0": {
+    "mean_return": -200.0,
+    "std_return": 0.0
+  },
+  "CartPole-v0": {
+    "mean_return": 22.05,
+    "std_return": 10.006372969263138
+  },
+  "vizdoom-v0": null
+}

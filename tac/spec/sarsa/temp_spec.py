@@ -36,7 +36,7 @@ spec = {
         "num_sessions": 2,
         "num_trials": 2,
         "random_seed": 42,
-        "max_frame": 1000,
+        "max_frame": 100,
     },
     # "search": {
     #     "learning_rate__choice": [0.01, 0.001],
